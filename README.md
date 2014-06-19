@@ -1,6 +1,6 @@
 # capistrano-secret
 
-A Capistrano gem to isolate secret information.
+A [Capistrano](http://capistranorb.com/) gem to isolate secret information.
 
 When developing, it is imperative to keep secret information (server names, login, passwords,...) out of source control.
 This usually leads to cumbersome and risky setups, especially when combined with a deployment tool (like Capistrano).
@@ -27,12 +27,12 @@ config/secret
 Then in Capistrano access any secret with:
 
 ```ruby
-secret('mail.user');
+secret('path.to.example.key');
 ```
 
 ## Features
 
-Here are capistrano-secret's advantages over alternatives (like keeping secret)
+Here are capistrano-secret's advantages over alternatives (like keeping whole config files out of repository)
 
 * All secret information in one unique place: no duplication, easy to keep out of repository.
 * Files contain only secret: no mixing with other, non-sensitive information (like configuration directives).
@@ -40,11 +40,13 @@ Here are capistrano-secret's advantages over alternatives (like keeping secret)
 * Each stages has its own set of secrets.
 * Method name makes it explicit to developer this is sensitive information (it's called `secret()`!).
 
-Full power shows when used in conjunction with a templating library like capistrano-template, to generate configuration files at deployment.
+Full power shows when used in conjunction with a templating library like [capistrano-template](https://github.com/xavierpriour/capistrano-template), to generate configuration files at deployment.
 
 ## Requirements
 
-* Capistrano 3
+* [Capistrano 3](http://capistranorb.com/)
+
+All dependencies are listed in the .gemspec file so if using `bundler` you just need to `bundle install` in your project directory.
 
 ## Usage
 
@@ -80,7 +82,7 @@ Then in the directory, create one JSON file per stage (same name as the stage):
 config/secret/production.json
 ```
 
-In the files, define keys as needed:
+In the files, define keys as needed, using JSON syntax. For example:
 ```JSON
 {
     "db" : {
@@ -100,7 +102,7 @@ In the files, define keys as needed:
 
 Then in your Capistrano tasks you can access any value using `secret('path.to.key')`.
 The call is safe and will just return `nil` if all or part of the path leads nowhere.
-So you can test the return value to see if an option is present:
+So you can test the return value of any part of the path to see if an option is present - for example:
 ```ruby
 if secret('mail') then
     # do something with mail info, like send a msg after deploy
