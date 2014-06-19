@@ -1,4 +1,4 @@
-# capistrano-secret
+# Capistrano::Secret
 
 A [Capistrano](http://capistranorb.com/) gem to isolate secret information.
 
@@ -7,28 +7,22 @@ This usually leads to cumbersome and risky setups, especially when combined with
 
 This tiny gem provides methods to **easily** do the **right thing**: conveniently tuck all secrets in a JSON file in a dedicated folder, and easily the information from the rest of the Capistrano tasks.
 
+
 ## Quick start
 
-Get the library:
-```ruby
+```bash
 gem install capistrano-secret
-```
-
-Load it into your `Capfile`:
-```ruby
-require 'capistrano/secret'
-```
-
-Create secret directory and add it to `.gitignore`:
-```
-config/secret
+echo "require 'capistrano/secret'" >> Capfile
+mkdir config/secret
+echo "config/secret" >> .gitignore
+echo '{"secret":{"of": {"life": 42}}}' > config/secret/production.json
 ```
 
 Then in Capistrano access any secret with:
-
 ```ruby
-secret('path.to.example.key');
+secret('secret.of.life');
 ```
+
 
 ## Features
 
@@ -48,17 +42,26 @@ Full power shows when used in conjunction with a templating library like [capist
 
 All dependencies are listed in the .gemspec file so if using `bundler` you just need to `bundle install` in your project directory.
 
+
+## Installation
+
+Add this line to your application's Gemfile:
+```
+gem 'capistrano-template'
+```
+
+And then execute:
+```bash
+$ bundle
+```
+
+Or install it yourself as:
+```bash
+$ gem install capistrano-template
+```
+
+
 ## Usage
-
-Get the gem, either manually:
-```ruby
-gem install capistrano-secret
-```
-
-Or using `bundler`, add the library to your `Gemfile`:
-```ruby
-gem 'capistrano-secret', require: false
-```
 
 Include gem in your `Capfile`:
 ```ruby
@@ -66,20 +69,19 @@ require 'capistrano/secret'
 ```
 
 Create directory where secret information will be stored.
-Default is `config/secret`, to change it update `deploy.rb`:
+Default is `config/secret`, to use a different one define `secret_dir` in `deploy.rb`:
 ```ruby
-set :secret_dir, '.secrets'
+set :secret_dir, 'new/secret/dir'
 ```
 
-Ensure the directory stays out of repository.
-For example, with git, add it to `.gitignore`:
-```
-config/secret
+Ensure the directory stays out of repository (for git, add it to `.gitignore`):
+```bash
+echo 'config/secret' >> .gitignore
 ```
 
 Then in the directory, create one JSON file per stage (same name as the stage):
-```
-config/secret/production.json
+```bash
+touch config/secret/production.json
 ```
 
 In the files, define keys as needed, using JSON syntax. For example:
@@ -108,3 +110,10 @@ if secret('mail') then
     # do something with mail info, like send a msg after deploy
 end
 ```
+
+## Contributing
+1. Fork it ( https://github.com/xavierpriour/capistrano-secret/fork )
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create a new Pull Request
