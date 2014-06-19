@@ -10,23 +10,25 @@ This tiny gem provides methods to **easily** do the **right thing**: convenientl
 
 ## Quick start
 
+In a shell:
 ```bash
 gem install capistrano-secret
 echo "require 'capistrano/secret'" >> Capfile
 mkdir config/secret
 echo "config/secret" >> .gitignore
 echo '{"secret":{"of": {"life": 42}}}' > config/secret/production.json
+echo '{"secret":{"of": {"life": "partying like crazy"}}}' > config/secret/staging.json
 ```
 
-Then in Capistrano access any secret with:
+Then in any Capistrano task:
 ```ruby
-secret('secret.of.life');
+puts "I know the secret, it is #{secret('secret.of.life')}";
 ```
 
 
 ## Features
 
-Here are capistrano-secret's advantages over alternatives (like keeping whole config files out of repository)
+Capistrano::Secret advantages:
 
 * All secret information in one unique place: no duplication, easy to keep out of repository.
 * Files contain only secret: no mixing with other, non-sensitive information (like configuration directives).
@@ -34,7 +36,8 @@ Here are capistrano-secret's advantages over alternatives (like keeping whole co
 * Each stages has its own set of secrets.
 * Method name makes it explicit to developer this is sensitive information (it's called `secret()`!).
 
-Full power shows when used in conjunction with a templating library like [capistrano-template](https://github.com/xavierpriour/capistrano-template), to generate configuration files at deployment.
+It really shines when used in conjunction with a templating library like [capistrano-template](https://github.com/xavierpriour/capistrano-template),
+to generate configuration files at deployment. Check it out!
 
 ## Requirements
 
