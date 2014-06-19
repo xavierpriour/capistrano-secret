@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Xavier Priour"]
   spec.email         = ["xavier.priour@bubblyware.com"]
   spec.summary       = %q{Capistrano extension to isolate secret information}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+#  spec.description   = %q{TODO: Write a longer description. Optional.}
   spec.homepage      = "https://github.com/xavierpriour/capistrano-secret"
   spec.license       = "MIT"
 

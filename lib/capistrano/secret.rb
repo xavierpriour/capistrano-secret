@@ -5,3 +5,5 @@ module Capistrano
     # Your code goes here...
   end
 end
+
+load File.expand_path('../secret/tasks/secret.cap', __FILE__)

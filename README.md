@@ -2,23 +2,24 @@
 
 A Capistrano gem to isolate secret information.
 
-When using Capistrano, it is imperative to keep secret information (server names, login, passwords,...) out of source control yet accessible to the tool.
-This tiny gem provides methods to conveniently tuck this info in JSON files in a dedicated folder, and explicitly access this as secret information.
+When developing, it is imperative to keep secret information (server names, login, passwords,...) out of source control.
+This usually leads to cumbersome and risky setups, especially when combined with a deployment tool (like Capistrano).
+
+This tiny gem provides methods to **easily** do the **right thing**: conveniently tuck all secrets in a JSON file in a dedicated folder, and easily the information from the rest of the Capistrano tasks.
 
 ## Quick start
-Add the library to your `Gemfile`:
 
+Get the library:
 ```ruby
-gem 'capistrano-secret', require: false
+gem install capistrano-secret
 ```
 
-Load it into your deployment script `config/deploy.rb`:
-
+Load it into your `Capfile`:
 ```ruby
-require 'capistrano-secret'
+require 'capistrano/secret'
 ```
 
-Add your secret directory to `.gitignore`:
+Create secret directory and add it to `.gitignore`:
 ```
 config/secret
 ```
@@ -43,23 +44,33 @@ Full power shows when used in conjunction with a templating library like capistr
 
 ## Requirements
 
-No external dependencies.
+* Capistrano 3
 
 ## Usage
 
-Include gem
+Get the gem, either manually:
+```ruby
+gem install capistrano-secret
+```
 
-Require in `deploy.rb`
+Or using `bundler`, add the library to your `Gemfile`:
+```ruby
+gem 'capistrano-secret', require: false
+```
+
+Include gem in your `Capfile`:
+```ruby
+require 'capistrano/secret'
+```
 
 Create directory where secret information will be stored.
 Default is `config/secret`, to change it update `deploy.rb`:
-
 ```ruby
 set :secret_dir, '.secrets'
 ```
 
 Ensure the directory stays out of repository.
-With git, add it to `.gitignore`:
+For example, with git, add it to `.gitignore`:
 ```
 config/secret
 ```
@@ -89,3 +100,9 @@ In the files, define keys as needed:
 
 Then in your Capistrano tasks you can access any value using `secret('path.to.key')`.
 The call is safe and will just return `nil` if all or part of the path leads nowhere.
+So you can test the return value to see if an option is present:
+```ruby
+if secret('mail') then
+    # do something with mail info, like send a msg after deploy
+end
+```
